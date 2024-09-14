@@ -16,6 +16,7 @@ class StoreTaskRequest extends FormRequest
     {
         return true;
     }
+    
     public function prepareForValidation()
     {
         $dueDate = $this->input('due_date');

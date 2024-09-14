@@ -42,12 +42,8 @@ Route::group(['middleware' => ['auth:api']], function () {
 
     Route::apiResource('projects', ProjectController::class)->middleware('admin');
     Route::apiResource('pivote', ProjectUserController::class)->middleware('admin');
-
-
+    
     Route::apiResource('tasks', TaskController::class)->middleware('manager');
-
-
-
     Route::put('tasks/{task}/assigne', [TaskController::class, 'update_assigned_to']);
 
     Route::get('my_tasks', [TaskController::class, 'get_my_task']);

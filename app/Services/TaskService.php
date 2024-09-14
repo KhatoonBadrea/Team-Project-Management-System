@@ -23,8 +23,10 @@ class TaskService
      */
     public function getAllTask()
     {
+        // $user = JWTAuth::parseToken()->authenticate();
+ 
         // try {
-        // //   $tasks=Task::
+           
 
         //     return TaskResource::collection($tasks);
         // } catch (\Exception $e) {
@@ -199,17 +201,21 @@ class TaskService
 
     public function show_task(Task $task)
     {
-        try {
+        
 
-            if (!$task->exists) {
-                return $this->notFound('Task not found.');
-            }
+        // try {
+         
+            
 
-            return TaskResource::make($task)->toArray(request());
-        } catch (\Exception $e) {
-            Log::error('Error in TaskService@show_task: ' . $e->getMessage());
-            return $this->errorResponse('An error occurred: ' . 'there is an error in the server', 500);
-        }
+        //     if (!$task->exists) {
+        //         return $this->notFound('Task not found.');
+        //     }
+
+        //     return TaskResource::make($task)->toArray(request());
+        // } catch (\Exception $e) {
+        //     Log::error('Error in TaskService@show_task: ' . $e->getMessage());
+        //     return $this->errorResponse('An error occurred: ' . 'there is an error in the server', 500);
+        // }
     }
 
 

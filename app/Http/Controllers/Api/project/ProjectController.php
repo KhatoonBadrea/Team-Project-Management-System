@@ -59,7 +59,7 @@ class ProjectController extends Controller
     {
         $validatedRequest = $request->validated();
         $project = $this->projectService->update_project($project, $validatedRequest);
-        return $this->successResponse($project, 'Task updated successfully.', 200);
+        return $this->successResponse($project, 'project updated successfully.', 200);
     }
 
     /**

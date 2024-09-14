@@ -16,7 +16,20 @@ class UpdateTaskRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        $task = $this->route('task');
+
+        try {
+            $user = JWTAuth::parseToken()->authenticate();
+        } catch (JWTException $e) {
+            return false;
+        }
+
+
+        if ($task->owner_id === $user->id) {
+            return true;
+        }
+
+        return false;
     }
 
 
@@ -28,7 +41,7 @@ class UpdateTaskRequest extends FormRequest
         $deadline = $this->input('deadline');
 
         $this->merge([
-            'due_date' => $dueDate ? Carbon::parse($dueDate)->format('Y-m-d') : null, // السماح بأن تكون due_date فارغة
+            'due_date' => $dueDate ? Carbon::parse($dueDate)->format('Y-m-d') : null,
             'deadline' => $deadline ? Carbon::parse($deadline)->format('Y-m-d') : null,
         ]);
     }
@@ -42,7 +55,7 @@ class UpdateTaskRequest extends FormRequest
         return [
             'title' => 'nullable|string|max:255',
             'description' => 'nullable|string|max:1000',
-            'priority' => 'nullable|string|in: low,medium, height',
+            'priority' => 'nullable|string|in:height,low,medium',
             'due_date' => 'nullable|date|after:now',
             'status' => 'nullable|string|in:pending,done,in-progress',
             'assigned_to' => 'nullable|integer|exists:users,id',
@@ -80,7 +93,7 @@ class UpdateTaskRequest extends FormRequest
             'due_date.after' => 'The due date must be a date after now',
             'deadline.after' => 'The deadline must be a date after now',
             'assigned_to.exists' => 'The selected user does not exist.',
-            'priority.in' => 'The priority must be one of the following values:  low,medium, height',
+            'priority.in' => 'The priority must be one of the following values:low,medium,height',
             'status.in' => 'The status must be one of the following values: pending, in-progress, done.',
         ];
     }

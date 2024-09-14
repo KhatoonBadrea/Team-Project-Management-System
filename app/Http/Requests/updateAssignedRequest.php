@@ -25,11 +25,8 @@ class updateAssignedRequest extends FormRequest
             return false;
         }
 
-        if ($user->state === 'admin') {
-            return true;
-        }
         // the manager can only update on the task who created it
-        if ($user->state === 'manager' && $task->owner_id === $user->id) {
+        if ($task->owner_id === $user->id) {
             return true;
         }
 

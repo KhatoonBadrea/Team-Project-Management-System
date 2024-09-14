@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Carbon\Carbon;
+use App\Rules\AssignRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -16,7 +17,7 @@ class StoreTaskRequest extends FormRequest
     {
         return true;
     }
-    
+
     public function prepareForValidation()
     {
         $dueDate = $this->input('due_date');
@@ -66,7 +67,7 @@ class StoreTaskRequest extends FormRequest
             'description' => 'required|string|max:1000',
             'priority' => 'required|string|in:height,low,medium',
             'due_date' => 'nullable|date|after:now',
-            'assigned_to' => 'required|integer|exists:users,id',
+            'assigned_to' => ['required', 'integer', 'exists:users,id', new AssignRule($this->input('project_id'))],
             'deadline' => 'required|date|after:now',
             'project_id' => 'required|integer|exists:projects,id',
             'note'=>'nullable|string|max:1000',

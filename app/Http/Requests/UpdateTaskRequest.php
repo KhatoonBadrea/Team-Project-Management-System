@@ -3,10 +3,11 @@
 namespace App\Http\Requests;
 
 use Carbon\Carbon;
+use App\Rules\AssignRule;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use Illuminate\Contracts\Validation\Validator;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UpdateTaskRequest extends FormRequest
@@ -58,7 +59,7 @@ class UpdateTaskRequest extends FormRequest
             'priority' => 'nullable|string|in:height,low,medium',
             'due_date' => 'nullable|date|after:now',
             'status' => 'nullable|string|in:pending,done,in-progress',
-            'assigned_to' => 'nullable|integer|exists:users,id',
+            'assigned_to' => ['nullable', 'integer', 'exists:users,id', new AssignRule($this->input('project_id'))],
             'deadline' => 'nullable|date|after:now',
         ];
     }

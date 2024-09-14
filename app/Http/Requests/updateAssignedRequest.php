@@ -3,11 +3,12 @@
 namespace App\Http\Requests;
 
 use Carbon\Carbon;
+use App\Rules\AssignRule;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 
 class updateAssignedRequest extends FormRequest
@@ -51,7 +52,7 @@ class updateAssignedRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'assigned_to' => 'nullable|integer|exists:users,id',
+            'assigned_to' => ['nullable', 'integer', 'exists:users,id', new AssignRule($this->input('project_id'))],
             'deadline' => 'nullable|date|after:now',
 
 

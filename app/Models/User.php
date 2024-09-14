@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Carbon\Carbon;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
@@ -44,7 +45,7 @@ class User extends Authenticatable implements JWTSubject
         'password' => 'hashed',
     ];
 
-     /**
+    /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
      * @return mixed
@@ -62,5 +63,23 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+
+
+    public function projects()
+    {
+        return $this->belongsToMany(Project::class, 'project_user')
+                    ->withPivot('role', 'num_of_hours', 'last_activity');
+    }
+
+    // استرجاع جميع المهام المرتبطة بالمشاريع التي يعمل عليها المستخدم
+    public function tasks()
+    {
+        
+        return $this->hasManyThrough(Task::class, Project::class, 'id', 'project_id', 'id', 'id')
+                    ->whereHas('users', function($query) {
+                        $query->where('user_id', $this->id);
+                    });
     }
 }

@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('project_user', function (Blueprint $table) {
+
+
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->enum('state', ['admin', 'user'])->default('user');
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+            $table->foreignId('project_id')->constrained('projects', 'id');
+            $table->foreignId('user_id')->constrained('users', 'id');
+            $table->enum('role', ['tester', 'developer ', 'manager']);
+            $table->integer('num_of_hours');
+            $table->DATETIME('last_activity');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('project_user');
     }
 };

@@ -18,7 +18,9 @@ class Task extends Model
         'status',
         'assigned_to',
         'owner_id',
-        'project_id', 
+        'project_id',
+        'start_time',
+        'end_time',
     ];
     public function project()
     {

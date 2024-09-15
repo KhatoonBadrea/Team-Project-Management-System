@@ -105,6 +105,7 @@ class StoreTaskRequest extends FormRequest
             'due_date.after' => 'The due date must be a date after today.',
             'deadline.after' => 'The deadline must be a date after now.',
             'assigned_to.exists' => 'The selected user does not exist.',
+            'project_id.exists' => 'The selected project does not exist.',
             'priority.in' => 'The priority must be one of the following values: low,medium, height',
             'status.in' => 'The status must be one of the following values: pending, in-progress, done.',
         ];

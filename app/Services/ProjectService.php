@@ -2,11 +2,12 @@
 
 namespace App\Services;
 
-use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Log;
+use App\Http\Resources\TaskResource;
 use App\Http\Traits\ApiResponseTrait;
+use App\Http\Resources\ProjectResource;
 
 class ProjectService
 {
@@ -32,9 +33,18 @@ class ProjectService
         }
     }
 
-    public function get_all_project()
+    public function get_all_project($last_task = null, $old_task = null)
     {
         try {
+            
+            if ($last_task) {
+                $projects = Project::with('lastTask')->get();
+                return $projects;
+            }
+            if ($old_task) {
+                $projects = Project::with('oldTask')->get();
+                return $projects;
+            }
 
             $projects = Project::all();
             return ProjectResource::collection($projects);
@@ -67,7 +77,4 @@ class ProjectService
             }
         }
     }
-
-
-  
 }

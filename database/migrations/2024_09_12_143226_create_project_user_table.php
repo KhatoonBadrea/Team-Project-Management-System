@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('project_id')->constrained('projects', 'id');
             $table->foreignId('user_id')->constrained('users', 'id');
             $table->enum('role', ['tester', 'developer ', 'manager']);
-            $table->integer('num_of_hours');
+            $table->integer('num_of_hours')->default(0);
             $table->DATETIME('last_activity');
             $table->timestamps();
         });

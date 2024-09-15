@@ -8,6 +8,7 @@ use App\Http\Traits\ApiResponseTrait;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Project;
+use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
@@ -26,11 +27,16 @@ class ProjectController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $project = $this->projectService->get_all_project();
+        $last_task = $request->input('last_task');
+        $old_task = $request->input('old_task');
+
+
+        $project = $this->projectService->get_all_project($last_task,$old_task);
 
         return $this->successResponse('this is all projects', $project, 200);
+      
     }
 
     /**

@@ -23,6 +23,8 @@ return new class extends Migration
             $table->foreignId('owner_id')->constrained('users', 'id');
             $table->dateTime('deadline');
             $table->string('note')->nullable();
+            $table->timestamp('start_time')->nullable(); 
+            $table->timestamp('end_time')->nullable(); 
             $table->timestamps();
         });
     }

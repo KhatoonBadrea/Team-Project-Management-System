@@ -22,7 +22,17 @@ class Project extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public function tasks(){
+    public function tasks()
+    {
         return $this->hasMany(Task::class);
+    }
+
+    public function lastTask()
+    {
+        return $this->hasOne(Task::class)->latestOfMany();
+    }
+    public function oldTask()
+    {
+        return $this->hasOne(Task::class)->oldestOfMany();
     }
 }

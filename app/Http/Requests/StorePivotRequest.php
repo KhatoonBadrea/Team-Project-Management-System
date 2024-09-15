@@ -20,7 +20,7 @@ class StorePivotRequest extends FormRequest
     public function prepareForValidation()
     {
         $last_activity = $this->input('last_activity');
-    
+
         if ($last_activity) {
             try {
                 // Attempt to parse with seconds
@@ -37,14 +37,14 @@ class StorePivotRequest extends FormRequest
                     ]));
                 }
             }
-    
+
             // Merge the correctly formatted date back into the request
             $this->merge([
                 'last_activity' => $last_activity->format('Y-m-d H:i:s'),
             ]);
         }
     }
-    
+
 
     /**
      * Get the validation rules that apply to the request.
@@ -57,8 +57,8 @@ class StorePivotRequest extends FormRequest
             'user_id' => 'required|integer|exists:users,id',
             'project_id' => 'required|integer|exists:projects,id',
             'role' => 'required|string|in:tester,manager,developer',
-            'num_of_hours' => 'required|integer|min:0',
-            'last_activity' => 'required|date|before:now'
+            'num_of_hours' => 'nullable|integer|min:0',
+            'last_activity' => 'nullable|date'
         ];
     }
 
@@ -87,10 +87,10 @@ class StorePivotRequest extends FormRequest
         return [
             'user_id.required' => 'User ID is required.',
             'project_id.required' => 'Project ID is required.',
-            'role.required' => 'Role is required and must be either tester, manager, or developer.',
+            'role.required' => 'Role is required ',
+            'role.in' => 'Role  must be either tester, manager, or developer.',
             'num_of_hours.required' => 'Number of hours is required and must be a positive integer.',
-            'last_activity.required' => 'Last activity date and time is required.',
-            'last_activity.before' => 'Last activity must be a date before now.',
+            // 'last_activity.before' => 'Last activity must be a date before now.',
         ];
     }
 }

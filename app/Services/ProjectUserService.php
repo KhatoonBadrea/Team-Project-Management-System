@@ -20,8 +20,8 @@ class ProjectUserService
 
         $user->projects()->attach($data['project_id'], [
             'role' => $data['role'],
-            'num_of_hours' => $data['num_of_hours'],
-            'last_activity' => $data['last_activity']
+            'num_of_hours' => 0,
+            'last_activity' => now(),
         ]);
 
         $pivotData = $user->projects()->where('project_id', $data['project_id'])->first()->pivot;

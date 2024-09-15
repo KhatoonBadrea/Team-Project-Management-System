@@ -31,12 +31,12 @@ class ProjectController extends Controller
     {
         $last_task = $request->input('last_task');
         $old_task = $request->input('old_task');
+        $height_priority = $request->input('height_priority');
 
 
-        $project = $this->projectService->get_all_project($last_task,$old_task);
+        $project = $this->projectService->get_all_project($last_task, $old_task, $height_priority);
 
         return $this->successResponse('this is all projects', $project, 200);
-      
     }
 
     /**

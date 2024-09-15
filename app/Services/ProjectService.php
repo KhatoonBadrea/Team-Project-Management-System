@@ -33,25 +33,29 @@ class ProjectService
         }
     }
 
-    public function get_all_project($last_task = null, $old_task = null)
+    public function get_all_project($last_task = null, $old_task = null, $height_priority = null)
     {
-        try {
-            
-            if ($last_task) {
-                $projects = Project::with('lastTask')->get();
-                return $projects;
-            }
-            if ($old_task) {
-                $projects = Project::with('oldTask')->get();
-                return $projects;
-            }
+        // try {
 
-            $projects = Project::all();
-            return ProjectResource::collection($projects);
-        } catch (\Exception $e) {
-            Log::error('Error in ProjectService@get_all_project: ' . $e->getMessage());
-            return $this->errorResponse('An error occurred: ' . 'there is an error in the server', 500);
+        if ($last_task) {
+            $projects = Project::with('lastTask')->get();
+            return $projects;
         }
+        if ($old_task) {
+            $projects = Project::with('oldTask')->get();
+            return $projects;
+        }
+        if ($height_priority) {
+            $project = Project::with('heightPriority')->get();
+            return $project;
+        }
+
+        $projects = Project::all();
+        return ProjectResource::collection($projects);
+        // } catch (\Exception $e) {
+        //     Log::error('Error in ProjectService@get_all_project: ' . $e->getMessage());
+        //     return $this->errorResponse('An error occurred: ' . 'there is an error in the server', 500);
+        // }
     }
 
     public function update_project(Project $project, array $data)

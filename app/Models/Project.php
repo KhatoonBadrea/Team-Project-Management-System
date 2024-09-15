@@ -35,4 +35,16 @@ class Project extends Model
     {
         return $this->hasOne(Task::class)->oldestOfMany();
     }
+
+    public function heightPriority()
+    {
+        return $this->hasOne(Task::class)
+        ->ofMany([
+            'priority' => 'max', 
+        ],function($q){
+            
+            $q->where('priority', 'height') 
+            ->where('title', 'like', 'A%'); 
+        });
+    }
 }

@@ -18,14 +18,12 @@ class Project extends Model
     {
         return $this->belongsToMany(User::class)->withPivot('role', 'last_activity', 'num-of-hours');
     }
-    public function owner()
-    {
-        return $this->belongsTo(User::class);
-    }
+    
     public function tasks()
     {
-        return $this->hasMany(Task::class);
+        return $this->hasMany(Task::class, 'project_id');
     }
+    
 
     public function lastTask()
     {

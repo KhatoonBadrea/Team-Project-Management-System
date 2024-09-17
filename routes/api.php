@@ -38,12 +38,16 @@ Route::group([
 
 
 
-Route::apiResource('projects', ProjectController::class);
 Route::group(['middleware' => ['auth:api']], function () {
 
-    Route::apiResource('pivote', ProjectUserController::class)->middleware('admin');
+    Route::apiResource('projects', ProjectController::class);
+    Route::post('pivote', [ProjectUserController::class, 'store'])->middleware('admin');
+    Route::get('pivote', [ProjectUserController::class, 'index'])->middleware('admin');
+    Route::put('users/{user_id}/projects/{project_id}', [ProjectUserController::class, 'update'])->middleware('admin');
+    Route::get('users/{user_id}/projects/{project_id}', [ProjectUserController::class, 'show'])->middleware('admin');
+    Route::delete('/users/{user_id}/projects/{project_id}', [ProjectUserController::class, 'destroy'])->middleware('admin');
 
-    Route::apiResource('tasks', TaskController::class)->middleware('manager');
+    Route::apiResource('tasks', TaskController::class);
     Route::put('tasks/{task}/assigne', [TaskController::class, 'update_assigned_to']);
 
     Route::get('my_tasks', [TaskController::class, 'get_my_task']);

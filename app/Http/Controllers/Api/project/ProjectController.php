@@ -44,7 +44,6 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request)
     {
-        // dd($request);
         $validationdata = $request->validated();
         $project = $this->projectService->create_project($validationdata);
         return $this->successResponse('successefuly added the project', $project, 201);

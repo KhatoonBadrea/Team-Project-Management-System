@@ -35,12 +35,13 @@ class TaskController extends Controller
      */
     public function index(Request $request)
     {
-        $priority = $request->input('priority');
-        $status = $request->input('status');
+        $filterBy = $request->input('filter_By');
+        $filterValue = $request->input('filter_Value');
 
-        $tasks = $this->taskService->getAllTask($priority, $status);
+        $tasks = $this->taskService->getAllTask($filterBy, $filterValue);
+        // dd($tasks);
 
-        return $this->successResponse('this is all tasks', $tasks, 200);
+        return $this->successResponse('this is the task of the project that work on it', $tasks, 200);
     }
 
 
@@ -116,7 +117,7 @@ class TaskController extends Controller
         $newAssigne = $this->taskService->update_assigned_to($task, $validatedRequest);
         return $this->successResponse($newAssigne, 'Assigned_to updated successfully.', 200);
     }
-
+ 
 
 
     /**

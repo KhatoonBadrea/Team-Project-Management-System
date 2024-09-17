@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Task;
+use App\Models\User;
 use App\Models\Project;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Log;
@@ -21,18 +22,25 @@ class TaskService
      * fetch the all task from DB and fillter it
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getAllTask()
+    public function getAllTask($filterBy = null, $filterValue = null)
     {
-        // $user = JWTAuth::parseToken()->authenticate();
- 
-        // try {
-           
+        try {
 
-        //     return TaskResource::collection($tasks);
-        // } catch (\Exception $e) {
-        //     Log::error('Error in TaskService@getAllTask: ' . $e->getMessage());
-        //     return $this->errorResponse('An error occurred: there is an error in the server', 500);
-        // }
+            if ($filterBy && $filterValue) {
+                $tasks = Task::whereRelation('user', $filterBy, $filterValue)->get();
+            } else {
+
+                $tasks = Task::all();
+            }
+
+            return TaskResource::collection($tasks);
+        } catch (\Exception $e) {
+            Log::error('Error in TaskService@getAllTask: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred: there is an error in the server',
+            ], 500);
+        }
     }
 
 
@@ -181,8 +189,9 @@ class TaskService
     {
         try {
             $user = JWTAuth::parseToken()->authenticate();
-
             $task = Task::where('assigned_to', $user->id)->get();
+
+
 
             return TaskResource::collection($task);
         } catch (\Exception $e) {
@@ -201,21 +210,21 @@ class TaskService
 
     public function show_task(Task $task)
     {
-        
 
-        // try {
-         
-            
 
-        //     if (!$task->exists) {
-        //         return $this->notFound('Task not found.');
-        //     }
+        try {
 
-        //     return TaskResource::make($task)->toArray(request());
-        // } catch (\Exception $e) {
-        //     Log::error('Error in TaskService@show_task: ' . $e->getMessage());
-        //     return $this->errorResponse('An error occurred: ' . 'there is an error in the server', 500);
-        // }
+
+
+            if (!$task->exists) {
+                return $this->notFound('Task not found.');
+            }
+
+            return TaskResource::make($task)->toArray(request());
+        } catch (\Exception $e) {
+            Log::error('Error in TaskService@show_task: ' . $e->getMessage());
+            return $this->errorResponse('An error occurred: ' . 'there is an error in the server', 500);
+        }
     }
 
 

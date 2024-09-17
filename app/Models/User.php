@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Carbon\Carbon;
 use Laravel\Sanctum\HasApiTokens;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -69,17 +70,14 @@ class User extends Authenticatable implements JWTSubject
 
     public function projects()
     {
-        return $this->belongsToMany(Project::class, 'project_user')
-                    ->withPivot('role', 'num_of_hours', 'last_activity');
+
+        return $this->belongsToMany(Project::class, 'project_user', 'user_id', 'project_id')
+
+            ->withPivot('role', 'num_of_hours', 'last_activity');
     }
 
-    // استرجاع جميع المهام المرتبطة بالمشاريع التي يعمل عليها المستخدم
     public function tasks()
     {
-        
-        return $this->hasManyThrough(Task::class, Project::class, 'id', 'project_id', 'id', 'id')
-                    ->whereHas('users', function($query) {
-                        $query->where('user_id', $this->id);
-                    });
+        return $this->hasmany(Task::class, 'assigned_to');
     }
 }

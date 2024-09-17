@@ -18,7 +18,6 @@ class ProjectResource extends JsonResource
         return [
             'name' => $this->name,
             'description' => $this->description,
-            'owner' => new UserResource($this->owner),
         ];
     }
 }

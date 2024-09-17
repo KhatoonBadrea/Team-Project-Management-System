@@ -15,14 +15,12 @@ class ProjectService
 
     public function create_project(array $data)
     {
-        $user = JWTAuth::parseToken()->authenticate();
-        // dd($user->id);
         try {
 
             $project = Project::create([
                 'name' => $data['name'],
                 'description' => $data['description'],
-                'owner_id' => $user->id,
+
             ]);
 
 

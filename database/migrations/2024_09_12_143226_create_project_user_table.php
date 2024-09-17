@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users', 'id');
             $table->enum('role', ['tester', 'developer ', 'manager']);
             $table->integer('num_of_hours')->default(0);
-            $table->DATETIME('last_activity');
+            $table->DATETIME('last_activity')->nullable();
             $table->timestamps();
         });
     }

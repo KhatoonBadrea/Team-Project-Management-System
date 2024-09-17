@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Services\TaskService;
 use App\Http\Requests\NoteRequest;
@@ -136,7 +137,7 @@ class TaskController extends Controller
         return $this->successResponse($newTask, 'Task updated successfully.', 200);
     }
 
-    
+
     /**
      * put a note on the task
      * @param NoteRequest $request
@@ -150,5 +151,18 @@ class TaskController extends Controller
         $validatedRequest = $request->validated();
         $newAssigne = $this->taskService->make_note($task, $validatedRequest);
         return $this->successResponse($newAssigne, 'Assigned_to updated successfully.', 200);
+    }
+
+
+    public function getTasksForUser($user_id)
+    {
+        $user = User::findOrFail($user_id);
+
+        $tasks = $user->tasksThroughProjects;
+
+        return response()->json([
+            'success' => true,
+            'tasks' => $tasks
+        ], 200);
     }
 }

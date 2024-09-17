@@ -59,3 +59,4 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::patch('/tasks/{task}/status', [TaskController::class, 'updateStatus']);
     Route::patch('tasks/{task}/note', [TaskController::class, 'makeNote']);
 });
+Route::get('users/{user_id}/tasks', [TaskController::class, 'getTasksForUser']);

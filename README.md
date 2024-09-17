@@ -1,7 +1,7 @@
 This project is a Team-Project-Management-System built with Laravel 10 that provides a RESTful APIf for managing Tasks ,We allow addicts to do crud operations on projects and also on the pivot table 
 We allow the manager to perform crud operations only within the project in which he is a manager
 The user who has been assigned a task can modify the status of this task 
-The cover-up could add a note on Tusk in the project he's just working on 
+The tester could add a note on Task in the project he's just working on 
 I made middelware so that the last activity of the laser that logs out is set
 And I created an event & listener to switch to due date
 
@@ -10,7 +10,7 @@ Key Features:
 CRUD Operations on projects:(Create ,update,delete,show) the admin onle can do this operation.
 CRUD operation on task: (create,update,delete,show)the  manager can do this operation 
 CRUD operation on pivot : (create,update,delete,show)the  admin can do this operation 
-Filtering : filter the task by status & priority by use relation & heightpriority $last task & old ask for project.
+Filtering : filter the task by status & priority & heightpriority & last task & old ask for project by use relation.
 use services for clean separation of concerns.
 Form Requests: Validation is handled by custom form request classes.
 event & listener: for dinamic update to due_date 

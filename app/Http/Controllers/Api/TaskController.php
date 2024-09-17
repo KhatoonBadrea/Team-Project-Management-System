@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use App\Services\TaskService;
+use App\Http\Requests\NoteRequest;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TaskResource;
@@ -117,7 +118,7 @@ class TaskController extends Controller
         $newAssigne = $this->taskService->update_assigned_to($task, $validatedRequest);
         return $this->successResponse($newAssigne, 'Assigned_to updated successfully.', 200);
     }
- 
+
 
 
     /**
@@ -133,5 +134,21 @@ class TaskController extends Controller
         $newTask = $this->taskService->update_status($task, $validatedRequest);
 
         return $this->successResponse($newTask, 'Task updated successfully.', 200);
+    }
+
+    
+    /**
+     * put a note on the task
+     * @param NoteRequest $request
+     * @param Task $task
+     * @return \Illuminate\Http\JsonResponse
+
+     */
+
+    public function makeNote(NoteRequest $request, Task $task)
+    {
+        $validatedRequest = $request->validated();
+        $newAssigne = $this->taskService->make_note($task, $validatedRequest);
+        return $this->successResponse($newAssigne, 'Assigned_to updated successfully.', 200);
     }
 }

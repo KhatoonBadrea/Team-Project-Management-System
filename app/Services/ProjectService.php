@@ -33,9 +33,9 @@ class ProjectService
 
     public function get_all_project($last_task = null, $old_task = null, $height_priority = null)
     {
-        // try {
+        try {
 
-        if ($last_task) {
+        if ($last_task) { 
             $projects = Project::with('lastTask')->get();
             return $projects;
         }
@@ -50,16 +50,15 @@ class ProjectService
 
         $projects = Project::all();
         return ProjectResource::collection($projects);
-        // } catch (\Exception $e) {
-        //     Log::error('Error in ProjectService@get_all_project: ' . $e->getMessage());
-        //     return $this->errorResponse('An error occurred: ' . 'there is an error in the server', 500);
-        // }
+        } catch (\Exception $e) {
+            Log::error('Error in ProjectService@get_all_project: ' . $e->getMessage());
+            return $this->errorResponse('An error occurred: ' . 'there is an error in the server', 500);
+        }
     }
 
     public function update_project(Project $project, array $data)
     { {
             try {
-                // dd($project);
 
                 if (!$project->exists) {
                     return $this->notFound('Project not found.');
@@ -72,7 +71,6 @@ class ProjectService
 
                 // Return the updated project as a resource
                 return ProjectResource::make($project)->toArray(request());
-                // return $project;
             } catch (\Exception $e) {
                 Log::error('Error in ProjectService@update_Project' . $e->getMessage());
                 return $this->errorResponse('An error occurred: ' . 'there is an error in the server', [], 500);

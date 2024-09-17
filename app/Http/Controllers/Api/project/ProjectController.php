@@ -25,7 +25,8 @@ class ProjectController extends Controller
 
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of the project & filter it by priority & status.
+     * @param Request $request
      */
     public function index(Request $request)
     {
@@ -40,7 +41,9 @@ class ProjectController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created project in storage.
+     * @param StoreProjectRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(StoreProjectRequest $request)
     {
@@ -58,7 +61,10 @@ class ProjectController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified project in storage.
+     * @param UpdateProjectRequest $request
+     * @param Project $project
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {

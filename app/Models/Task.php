@@ -21,6 +21,7 @@ class Task extends Model
         'project_id',
         'start_time',
         'end_time',
+        'note'
     ];
     public function project()
     {

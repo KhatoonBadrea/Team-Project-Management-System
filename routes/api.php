@@ -37,10 +37,12 @@ Route::group([
 });
 
 
- 
+
 Route::group(['middleware' => ['auth:api']], function () {
 
-    Route::apiResource('projects', ProjectController::class);
+    Route::apiResource('projects', ProjectController::class)->middleware('admin');
+    Route::get('projects', [ProjectController::class, 'index']);
+
     Route::post('pivote', [ProjectUserController::class, 'store'])->middleware('admin');
     Route::get('pivote', [ProjectUserController::class, 'index'])->middleware('admin');
     Route::put('users/{user_id}/projects/{project_id}', [ProjectUserController::class, 'update'])->middleware('admin');
@@ -48,11 +50,12 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::delete('/users/{user_id}/projects/{project_id}', [ProjectUserController::class, 'destroy'])->middleware('admin');
 
     Route::apiResource('tasks', TaskController::class)->middleware('manager');
-    Route::get('tasks', [TaskController::class,'index']);
-    Route::get('tasks/{task}', [TaskController::class,'show']);
+    Route::get('tasks', [TaskController::class, 'index']);
+    Route::get('tasks/{task}', [TaskController::class, 'show']);
     Route::put('tasks/{task}/assigne', [TaskController::class, 'update_assigned_to']);
 
     Route::get('my_tasks', [TaskController::class, 'get_my_task']);
 
     Route::patch('/tasks/{task}/status', [TaskController::class, 'updateStatus']);
+    Route::patch('tasks/{task}/note', [TaskController::class, 'makeNote']);
 });

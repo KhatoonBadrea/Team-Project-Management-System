@@ -204,26 +204,26 @@ class TaskService
      * @return \Illuminate\Http\JsonResponse
      */
 
-     public function show_task(Task $task)
-     {
-         try {
+    public function show_task(Task $task)
+    {
+        try {
 
             if (!$task->exists) {
-                 return $this->notFound('Task not found.');
-             }
-     
-             $taskWithProject = $task->load('project');
-     
-             return [
-                 'task' => TaskResource::make($taskWithProject)->toArray(request()),
-                 'project' => new ProjectResource($taskWithProject->project),
-             ];
-         } catch (\Exception $e) {
-             Log::error('Error in TaskService@show_task: ' . $e->getMessage());
-             return $this->errorResponse('An error occurred: there is an error in the server', 500);
-         }
-     }
-     
+                return $this->notFound('Task not found.');
+            }
+
+            $taskWithProject = $task->load('project');
+
+            return [
+                'task' => TaskResource::make($taskWithProject)->toArray(request()),
+                'project' => new ProjectResource($taskWithProject->project),
+            ];
+        } catch (\Exception $e) {
+            Log::error('Error in TaskService@show_task: ' . $e->getMessage());
+            return $this->errorResponse('An error occurred: there is an error in the server', 500);
+        }
+    }
+
 
 
     public function update_status(Task $task, array $data)
@@ -237,6 +237,31 @@ class TaskService
         } catch (\Exception $e) {
             Log::error('Error in TaskService@update_status: ' . $e->getMessage());
             return $this->errorResponse('An error occurred: there is an error in the server', 500);
+        }
+    }
+
+
+    public function make_note(Task $task, array $data)
+    {
+        try {
+            
+            if (!$task->exists) {
+                return $this->notFound('Task not found.');
+            }
+            //   Update only the fields that are provided in the data array
+            $task->update(array_filter([
+
+                'note' => $data['note'] ?? $task->note,
+
+            ]));
+
+            // dd($task);
+
+            // Return the updated task as a resource
+            return TaskResource::make($task)->toArray(request());
+        } catch (\Exception $e) {
+            Log::error('Error in TaskService@update_Task' . $e->getMessage());
+            return $this->errorResponse('An error occurred: ' . 'there is an error in the server', [], 500);
         }
     }
 }

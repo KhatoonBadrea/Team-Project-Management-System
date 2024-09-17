@@ -31,11 +31,11 @@ class AssignRule implements ValidationRule
 
         $userInProject = $project->users()
             ->where('user_id', $value)
-            ->wherePivot('role', 'developer')
+            ->whereIn('role', ['developer', 'tester']) 
             ->exists();
 
         if (!$userInProject) {
-            $fail('The selected user is not a developer in the team of this project');
+            $fail('The selected user is not a developer or tester in the team of this project.');
         }
     }
 }

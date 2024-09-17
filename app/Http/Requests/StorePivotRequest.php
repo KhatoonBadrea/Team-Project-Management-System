@@ -86,6 +86,8 @@ class StorePivotRequest extends FormRequest
     {
         return [
             'user_id.required' => 'User ID is required.',
+            'user_id.exists' => 'this user not found.',
+            'project_id.exists' => 'this project not found.',
             'project_id.required' => 'Project ID is required.',
             'role.required' => 'Role is required ',
             'role.in' => 'Role  must be either tester, manager, or developer.',

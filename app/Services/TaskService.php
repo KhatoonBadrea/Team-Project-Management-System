@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Resources\TaskResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Events\TaskStatusUpdatedEvent;
+use App\Http\Resources\ProjectResource;
 
 class TaskService
 {
@@ -95,7 +96,6 @@ class TaskService
     public function update_task(Task $task, array $data)
     {
         try {
-            // dd($task);
 
             if (!$task->exists) {
                 return $this->notFound('Task not found.');
@@ -105,18 +105,14 @@ class TaskService
                 'title' => $data['title'] ?? $task->title,
                 'description' => $data['description'] ?? $task->description,
                 'priority' => $data['priority'] ?? $task->priority,
-                'due_date' => $data['due_date'] ?? $task->due_date,
-                'status' => $data['status'] ?? $task->status,
                 'project_id' => $data['project_id'] ?? $task->project_id,
                 'assigned_to' => $data['assigned_to'] ?? $task->assigned_to,
                 'deadline' => $data['deadline'] ?? $task->deadline,
-                'note' => $data['note'] ?? $task->note,
 
             ]));
 
             // Return the updated task as a resource
             return TaskResource::make($task)->toArray(request());
-            // return $task;
         } catch (\Exception $e) {
             Log::error('Error in TaskService@update_Task' . $e->getMessage());
             return $this->errorResponse('An error occurred: ' . 'there is an error in the server', [], 500);
@@ -208,24 +204,26 @@ class TaskService
      * @return \Illuminate\Http\JsonResponse
      */
 
-    public function show_task(Task $task)
-    {
-
-
-        try {
-
-
+     public function show_task(Task $task)
+     {
+         try {
 
             if (!$task->exists) {
-                return $this->notFound('Task not found.');
-            }
-
-            return TaskResource::make($task)->toArray(request());
-        } catch (\Exception $e) {
-            Log::error('Error in TaskService@show_task: ' . $e->getMessage());
-            return $this->errorResponse('An error occurred: ' . 'there is an error in the server', 500);
-        }
-    }
+                 return $this->notFound('Task not found.');
+             }
+     
+             $taskWithProject = $task->load('project');
+     
+             return [
+                 'task' => TaskResource::make($taskWithProject)->toArray(request()),
+                 'project' => new ProjectResource($taskWithProject->project),
+             ];
+         } catch (\Exception $e) {
+             Log::error('Error in TaskService@show_task: ' . $e->getMessage());
+             return $this->errorResponse('An error occurred: there is an error in the server', 500);
+         }
+     }
+     
 
 
     public function update_status(Task $task, array $data)

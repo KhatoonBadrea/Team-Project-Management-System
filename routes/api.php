@@ -37,7 +37,7 @@ Route::group([
 });
 
 
-
+ 
 Route::group(['middleware' => ['auth:api']], function () {
 
     Route::apiResource('projects', ProjectController::class);
@@ -47,7 +47,9 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('users/{user_id}/projects/{project_id}', [ProjectUserController::class, 'show'])->middleware('admin');
     Route::delete('/users/{user_id}/projects/{project_id}', [ProjectUserController::class, 'destroy'])->middleware('admin');
 
-    Route::apiResource('tasks', TaskController::class);
+    Route::apiResource('tasks', TaskController::class)->middleware('manager');
+    Route::get('tasks', [TaskController::class,'index']);
+    Route::get('tasks/{task}', [TaskController::class,'show']);
     Route::put('tasks/{task}/assigne', [TaskController::class, 'update_assigned_to']);
 
     Route::get('my_tasks', [TaskController::class, 'get_my_task']);

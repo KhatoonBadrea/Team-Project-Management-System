@@ -47,7 +47,6 @@ class StoreTaskRequest extends FormRequest
             }
         }
     
-        // تأكد من استخدام التنسيق الصحيح الذي تدعمه قاعدة البيانات
         $this->merge([
             'due_date' => $dueDate ? $dueDate->format('Y-m-d H:i:s') : null,
             'deadline' => $deadline ? $deadline->format('Y-m-d H:i:s') : null,
